@@ -1,0 +1,9 @@
+.yomi-tooltip {
+	background-color:#00bfff;
+	padding: 5px;
+	max-width:500px;
+	text-align:left;
+	z-index: 999;
+	border-radius: 5px;
+}
+
