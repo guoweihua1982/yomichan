@@ -1,20 +1,21 @@
 window.onmouseup = function(e) {
 	var selectionText = getSelectionText();
-	if (selectionText) {
+	if (selectionText != "") {
 		try {
 			chrome.runtime.sendMessage({
 				selectionText : selectionText
 			}, function(response) {
-				var x = 15;
-				var y = 15;
-				var tooltip = "<div class='yomi-tooltip'>" + response
-						+ "</div>";
-				$("body").append(tooltip);
-				$(".yomi-tooltip").css({
-					"top" : (e.pageY + y) + "px",
-					"left" : (e.pageX + x) + "px",
-					"position" : "absolute"
-				}).show("fast");
+				if (getSelectionText() != "") {
+					var x = 15;
+					var y = 15;
+					var tooltip = "<div class='yomi-tooltip'>" + response
+							+ "</div>";
+					$("body").append(tooltip);
+					$(".yomi-tooltip").css({
+						"top" : (e.pageY + y) + "px",
+						"left" : (e.pageX + x) + "px"
+					}).show("fast");
+				}
 			});
 		} catch (e) {
 			// do nothing

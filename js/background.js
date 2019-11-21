@@ -18,7 +18,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		return ;
 	}
 	request.selectionText.split(/\r\n|\r|\n/).forEach(function(v, i) {
-		console.log(v);
 		if (resultHtml != "") {
 			resultHtml += "<br>";
 		}
@@ -36,8 +35,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			if (reading != null && reading.trim() != "") {
 				var kana = kanaToHira(reading);
 				if (kana != kanaToHira(surfaceForm)) {
-					resultHtml += "<ruby><rb><b>" + surfaceForm
-							+ "</b></rb><rp>(</rp><rt>&nbsp;" + kana
+					resultHtml += "<ruby><rb>" + surfaceForm
+							+ "</rb><rp>(</rp><rt>&nbsp;" + kana
 							+ "&nbsp;</rt><rp>)</rp></ruby>";
 					continue;
 				}
@@ -45,7 +44,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			resultHtml += surfaceForm;
 		}
 	})
-	console.log(resultHtml);
 	sendResponse(resultHtml);
 });
 function kanaToHira(str) {
