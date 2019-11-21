@@ -1,22 +1,21 @@
-.yomichan-tooltip {
+.yomichan-popup {
 	position:absolute;
 	background-color:#4682b4;
 	color: white;
 	font-size: 14px;
 	padding: 5px;
-	max-width: 50%;
 	text-align: left;
 	z-index: 999999999;
 	border-radius: 5px;
 	padding: 5px;
 }
 
-.yomichan-tooltip>ruby {
+.yomichan-popup>ruby {
 	font-weight: bold;
 	color: #87cefa;
 }
 
-.yomichan-tooltip>ruby>rt {
+.yomichan-popup>ruby>rt {
 	font-size: 10px;
 	color:#40e0d0;
 }

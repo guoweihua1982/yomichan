@@ -23,7 +23,6 @@
 				"<all_urls>"
 			],
 			"js": [
-				"lib/jquery/jquery-1.12.4.min.js",
 				"js/content.js"
 			],
 			"css": [
@@ -36,11 +35,6 @@
 		"storage"
 	],
 	"homepage_url": "https://github.com/guoweihua1982",
-	"options_page": "html/options.html",
-	"options_ui": {
-		"page": "html/options.html",
-		"chrome_style": true
-	},
 	"omnibox": {
 		"keyword": "yomi"
 	}
