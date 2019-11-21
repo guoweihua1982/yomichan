@@ -1,21 +1,22 @@
-.yomi-tooltip {
+.yomichan-tooltip {
 	position:absolute;
 	background-color:#4682b4;
 	color: white;
 	font-size: 14px;
 	padding: 5px;
-	max-width: 500px;
+	max-width: 50%;
 	text-align: left;
 	z-index: 999999999;
 	border-radius: 5px;
 	padding: 5px;
 }
 
-.yomi-tooltip>ruby {
+.yomichan-tooltip>ruby {
 	font-weight: bold;
 	color: #87cefa;
 }
 
-.yomi-tooltip>ruby>rt {
+.yomichan-tooltip>ruby>rt {
 	font-size: 10px;
+	color:#40e0d0;
 }

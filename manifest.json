@@ -1,16 +1,16 @@
 {
 	"manifest_version": 2,
-	"name": "yomi",
+	"name": "yomichan",
 	"version": "1.0.0",
-	"description": "選択したテキストにふりがなを付けるアドオン",
+	"description": "選択したテキストにふりがなを付ける",
 	"icons": {
 		"16": "img/icon.png",
 		"48": "img/icon.png",
 		"128": "img/icon.png"
 	},
 	"browser_action": {
-		"default_icon": "img/icon.png",
-		"default_title": "選択したテキストにふりがなを付けるアドオン"
+		"default_icon": "img/yomichan_disable.png",
+		"default_title": "選択したテキストにふりがなを付ける"
 	},
 	"background": {
 		"page": "html/background.html",
@@ -33,8 +33,6 @@
 		}
 	],
 	"permissions": [
-		"notifications",
-		"webRequest",
 		"storage"
 	],
 	"homepage_url": "https://github.com/guoweihua1982",
