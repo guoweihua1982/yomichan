@@ -45,28 +45,33 @@ var ymcContent = {
 	},
 	// ひらがなを付けるテキストのポップアップを表示
 	showPopup : function(selection, html) {
+		let maxWidth = Math.max(selection.maxWidth, selection.width);
 		var popup = document.createElement('div');
 		popup.classList.add('yomichan-popup');
+		popup.style.maxWidth = maxWidth + "px";
 		popup.innerHTML = html;
-		if (selection.selectionText.split(/\r\n|\r|\n/).length > 1) {
-			// 複数行の場合、幅は選択区域と同じにする
-			popup.style.width = selection.width + "px";
-		} else {
-			popup.style.maxWidth = "50%";
-		}
 
 		document.body.appendChild(popup);
 
+		// 表示する内容の幅を取得し、ポップアップに設定する
+		var range = document.createRange();
+		range.selectNodeContents(popup);
+		popup.style.width = Math.min(maxWidth,
+				range.getBoundingClientRect().width)
+				+ "px";
+		window.getSelection().removeRange(range);
+
 		var x = selection.left
-		var y = selection.top - popup.clientHeight - 10;
+		var y = selection.top - popup.clientHeight - 5;
 		if (x < 0) {
 			x = 0;
 		}
-		if (y < 0) {
-			y = 0;
+		if ((y - document.documentElement.scrollTop) < 0) {
+			y = selection.bottom + 5;
 		}
 		popup.style.left = x + "px";
 		popup.style.top = y + "px";
+
 	},
 	// ポップアップを閉じる
 	closePopup : function() {
@@ -79,9 +84,22 @@ var ymcContent = {
 		if (window.getSelection) {
 			let selection = window.getSelection();
 			let selectionText = selection.toString();
-			if (selectionText != "") {
-				let selectionRect = selection.getRangeAt(0)
-						.getBoundingClientRect();
+			if (selection.rangeCount && selectionText != "") {
+				let range = selection.getRangeAt(0);
+				let selectionRect = range.getBoundingClientRect();
+				let maxWidth = document.body.clientWidth;
+				let parentEl = range.commonAncestorContainer;
+				while (parentEl != null
+						&& parentEl.nodeType != Node.ELEMENT_NODE
+						&& parentEl.nodeType != Node.DOCUMENT_NODE) {
+					// ELEMENT_NODEではない場合、上層のノードを取得する
+					parentEl = parentEl.parentNode;
+				}
+				if (parentEl.nodeType == Node.ELEMENT_NODE) {
+					maxWidth = parentEl.clientWidth
+							- (selectionRect.left - parentEl
+									.getBoundingClientRect().left);
+				}
 				return {
 					selectionText : selectionText,
 					left : selectionRect.left
@@ -93,7 +111,8 @@ var ymcContent = {
 					bottom : selectionRect.bottom
 							+ document.documentElement.scrollTop,
 					width : selectionRect.width,
-					height : selectionRect.height
+					height : selectionRect.height,
+					maxWidth : maxWidth
 				};
 			}
 		}

@@ -1,21 +1,26 @@
 .yomichan-popup {
-	position:absolute;
-	background-color:#4682b4;
+	position: absolute;
+	background-color: #4682b4;
 	color: white;
-	font-size: 14px;
+	font-size: 12px;
 	padding: 5px;
 	text-align: left;
 	z-index: 999999999;
 	border-radius: 5px;
 	padding: 5px;
+	word-break: break-all;
 }
 
 .yomichan-popup>ruby {
+	padding:0px;
+	border:0px;
 	font-weight: bold;
 	color: #87cefa;
+	font-size: 14px;
 }
 
 .yomichan-popup>ruby>rt {
 	font-size: 10px;
-	color:#40e0d0;
+	color: #40e0d0;
+	white-space: nowrap;
 }
