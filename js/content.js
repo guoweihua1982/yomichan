@@ -28,10 +28,12 @@ var ymcContent = {
 					type : "getFurigana",
 					data : selection.selectionText
 				}, function(response) {
-					var checkSelection = ymcContent.getSelection();
-					if (ymcContent.enabled && checkSelection != null
-							&& checkSelection.selectionText != "") {
-						ymcContent.showPopup(selection, response);
+					if (response) {
+						var checkSelection = ymcContent.getSelection();
+						if (ymcContent.enabled && checkSelection != null
+								&& checkSelection.selectionText != "") {
+							ymcContent.showPopup(selection, response);
+						}
 					}
 				});
 			} catch (e) {

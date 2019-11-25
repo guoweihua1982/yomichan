@@ -69,6 +69,7 @@ var ymcMain = {
 		if (text == null || text == "") {
 			return;
 		}
+		let hasResponse = false;
 		text.split(/\r\n|\r|\n/).forEach(
 				function(v, i) {
 					// 行ごとに処理
@@ -97,6 +98,7 @@ var ymcMain = {
 								resultHtml += "<ruby><rb>" + surfaceForm
 										+ "</rb><rp>(</rp><rt>&nbsp;" + kana
 										+ "&nbsp;</rt><rp>)</rp></ruby>";
+								hasResponse=true;
 								continue;
 							}
 						}
@@ -104,8 +106,10 @@ var ymcMain = {
 						resultHtml += surfaceForm;
 					}
 				});
-		// 作成したHTMLをcontentに返却する
-		sendResponse(resultHtml);
+		if (hasResponse) {
+			// 作成したHTMLをcontentに返却する
+			sendResponse(resultHtml);
+		}
 	}
 }
 
