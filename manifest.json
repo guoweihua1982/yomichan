@@ -38,5 +38,9 @@
 	"homepage_url": "https://github.com/guoweihua1982/yomichan",
 	"omnibox": {
 		"keyword": "yomi"
-	}
+	},
+	"web_accessible_resources": [
+		"img/shrinkButton.png",
+		"img/icon.png"
+	]
 }

@@ -1,26 +1,73 @@
 .yomichan-popup {
 	position: absolute;
-	background-color: #4682b4;
-	color: white;
 	font-size: 12px;
-	padding: 5px;
-	text-align: left;
 	z-index: 999999999;
+	background-color: #4682b4;
 	border-radius: 5px;
 	padding: 5px;
-	word-break: break-all;
 }
 
-.yomichan-popup>ruby {
-	padding:0px;
-	border:0px;
+.yomichan-popup>.yomichan-content {
+	padding: 0px;
+	color: white;
+	text-align: left;
+	word-break: break-all;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+.yomichan-popup>.yomichan-content>ruby {
+	padding: 0px;
+	border: 0px;
 	font-weight: bold;
 	color: #87cefa;
 	font-size: 14px;
 }
 
-.yomichan-popup>ruby>rt {
+.yomichan-popup>.yomichan-content>ruby>rt {
 	font-size: 10px;
 	color: #40e0d0;
 	white-space: nowrap;
+}
+
+.yomichan-popup>.yomichan-popup-toggle-button {
+	position: absolute;
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	background-image:
+		url("chrome-extension://__MSG_@@extension_id__/img/shrinkButton.png");
+	background-repeat: repeat;
+	background-color: transparent;
+	background-size: 100% 100%;
+	border: 0;
+	outline: none;
+}
+
+.yomichan-popup-top>.yomichan-popup-toggle-button {
+	right: -20px;
+	bottom: 0px;
+}
+
+.yomichan-popup-bottom>.yomichan-popup-toggle-button {
+	right: -20px;
+	top: 0px;
+}
+
+.yomichan-popup-hidden {
+	padding: 0px;
+}
+
+.yomichan-popup-hidden>.yomichan-popup-toggle-button {
+	background-image:
+		url("chrome-extension://__MSG_@@extension_id__/img/icon.png");
+}
+
+.yomichan-popup-transition {
+	transition: all 0.5s linear;
+}
+
+.yomichan-popup-transition>.yomichan-popup-toggle-button {
+	transition: all 0.5s linear;
 }
