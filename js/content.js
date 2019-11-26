@@ -92,12 +92,11 @@ var ymcContent = {
 				let maxWidth = document.body.clientWidth;
 				let parentEl = range.commonAncestorContainer;
 				while (parentEl != null
-						&& parentEl.nodeType != Node.ELEMENT_NODE
-						&& parentEl.nodeType != Node.DOCUMENT_NODE) {
+						&& (parentEl.nodeType != Node.ELEMENT_NODE || parentEl.clientWidth == 0)) {
 					// ELEMENT_NODEではない場合、上層のノードを取得する
 					parentEl = parentEl.parentNode;
 				}
-				if (parentEl.nodeType == Node.ELEMENT_NODE) {
+				if (parentEl != null && parentEl.nodeType == Node.ELEMENT_NODE) {
 					maxWidth = parentEl.clientWidth
 							- (selectionRect.left - parentEl
 									.getBoundingClientRect().left);
