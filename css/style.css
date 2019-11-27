@@ -1,33 +1,35 @@
 .yomichan-popup {
 	position: absolute;
-	font-size: 12px;
 	z-index: 999999999;
-	background-color: #4682b4;
+	background-image: linear-gradient(to bottom, #6bbed2, #50abc4);
+	background-repeat: repeat-x;
+	border-color: #f5e79e;
 	border-radius: 5px;
 	padding: 5px;
 }
 
 .yomichan-popup>.yomichan-content {
 	padding: 0px;
-	color: white;
+	color: black;
 	text-align: left;
 	word-break: break-all;
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
+	font-size: 12px;
 }
 
 .yomichan-popup>.yomichan-content>ruby {
 	padding: 0px;
 	border: 0px;
 	font-weight: bold;
-	color: #87cefa;
+	color: #8a6d3b;
 	font-size: 14px;
 }
 
 .yomichan-popup>.yomichan-content>ruby>rt {
 	font-size: 10px;
-	color: #40e0d0;
+	color: #8a6d3b;
 	white-space: nowrap;
 }
 
@@ -65,9 +67,9 @@
 }
 
 .yomichan-popup-transition {
-	transition: all 0.5s linear;
+	transition: all 0.3s linear;
 }
 
 .yomichan-popup-transition>.yomichan-popup-toggle-button {
-	transition: all 0.5s linear;
+	transition: all 0.3s linear;
 }
