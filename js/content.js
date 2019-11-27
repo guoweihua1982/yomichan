@@ -39,21 +39,27 @@ var ymcContent = {
 		}
 		if (selection != null && selection.selectionText != "") {
 			try {
-				chrome.runtime.sendMessage({
-					type : "getFurigana",
-					data : selection.selectionText
-				}, function(response) {
-					if (response) {
-						var checkSelection = ymcContent.getSelection();
-						if (ymcContent.enabled && checkSelection != null
-								&& checkSelection.selectionText != "") {
-							ymcContent.closePopup();
-							ymcContent.showPopup(selection, response);
-							ymcContent.oldSelectionText = (selection != null) ? selection.selectionText
-									: "";
-						}
-					}
-				});
+				chrome.runtime
+						.sendMessage(
+								{
+									type : "getFurigana",
+									data : selection.selectionText
+								},
+								function(response) {
+									if (response) {
+										var checkSelection = ymcContent
+												.getSelection();
+										if (ymcContent.enabled
+												&& checkSelection != null
+												&& checkSelection.selectionText != "") {
+											ymcContent.closePopup();
+											ymcContent.showPopup(selection,
+													response);
+											ymcContent.oldSelectionText = (selection != null) ? selection.selectionText
+													: "";
+										}
+									}
+								});
 			} catch (e) {
 				// do nothing
 			}
@@ -91,18 +97,17 @@ var ymcContent = {
 		let maxWidth = Math.max(selection.maxWidth, selection.width)
 				- parseFloat(_style.paddingLeft)
 				- parseFloat(_style.paddingRight);
-		popup.style.maxWidth = maxWidth + "px";
+		popup.style.maxWidth = Math.ceil(maxWidth) + "px";
 
 		// 表示する内容の幅を取得し、ポップアップに設定する
 		var range = document.createRange();
 		range.selectNodeContents(yomichanContent);
 		let width = Math.min(maxWidth, range.getBoundingClientRect().width);
-		popup.style.width = width + "px";
+		popup.style.width = Math.ceil(width) + "px";
 		window.getSelection().removeRange(range);
 
 		// 表示する位置を計算
-		popup.style.right = (document.documentElement.clientWidth
-				- (selection.right + document.documentElement.scrollLeft))
+		popup.style.right = (document.documentElement.clientWidth - (selection.right + document.documentElement.scrollLeft))
 				+ "px";
 
 		if ((selection.top - popup.clientHeight - 5) < 0) {
@@ -119,7 +124,8 @@ var ymcContent = {
 		// 展開する場合のサイズを記憶
 		var _clientH = popup.clientHeight - parseFloat(_style.paddingTop)
 				- parseFloat(_style.paddingBottom);
-		var _clientW = popup.clientWidth;
+		var _clientW = popup.clientWidth - parseFloat(_style.paddingLeft)
+				- parseFloat(_style.paddingRight);
 
 		// 拡大縮小ボタンの押下イベント
 		yomichanPopupToggleButton.addEventListener('click', function() {

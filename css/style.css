@@ -6,6 +6,7 @@
 	border-color: #f5e79e;
 	border-radius: 5px;
 	padding: 5px;
+	box-sizing: content-box;
 }
 
 .yomichan-popup>.yomichan-content {
@@ -17,6 +18,7 @@
 	width: 100%;
 	overflow: hidden;
 	font-size: 12px;
+	box-sizing: content-box;
 }
 
 .yomichan-popup>.yomichan-content>ruby {
