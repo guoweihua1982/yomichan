@@ -39,6 +39,8 @@
 	position: absolute;
 	cursor: pointer;
 	width: 20px;
+	min-width: 20px;
+	max-width: 20px;
 	height: 20px;
 	background-image:
 		url("chrome-extension://__MSG_@@extension_id__/img/shrinkButton.png");
@@ -47,6 +49,9 @@
 	background-size: 100% 100%;
 	border: 0;
 	outline: none;
+	box-sizing: border-box;
+	box-shadow: none;
+	padding: 5px;
 }
 
 .yomichan-popup-top>.yomichan-popup-toggle-button {
