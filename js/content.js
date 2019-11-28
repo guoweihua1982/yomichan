@@ -94,21 +94,29 @@ var ymcContent = {
 
 		// 表示する幅を再計算
 		var _style = window.getComputedStyle(popup, null);
+		let horizontalPadding = parseFloat(_style.paddingLeft)
+				+ parseFloat(_style.paddingRight);
+		let verticalPadding = parseFloat(_style.paddingTop)
+				+ parseFloat(_style.paddingBottom)
 		let maxWidth = Math.max(selection.maxWidth, selection.width)
-				- parseFloat(_style.paddingLeft)
-				- parseFloat(_style.paddingRight);
+				- horizontalPadding;
 		popup.style.maxWidth = Math.ceil(maxWidth) + "px";
 
 		// 表示する内容の幅を取得し、ポップアップに設定する
 		var range = document.createRange();
 		range.selectNodeContents(yomichanContent);
-		let width = Math.min(maxWidth, range.getBoundingClientRect().width);
+		let width = Math.ceil(Math.min(maxWidth,
+				range.getBoundingClientRect().width));
 		popup.style.width = Math.ceil(width) + "px";
 		window.getSelection().removeRange(range);
 
 		// 表示する位置を計算
-		popup.style.right = (document.documentElement.clientWidth - (selection.right + document.documentElement.scrollLeft))
-				+ "px";
+		let right = document.documentElement.clientWidth
+				- (selection.right + document.documentElement.scrollLeft);
+		right = Math.min(right, document.documentElement.clientWidth - width
+				- horizontalPadding);
+		right = Math.max(right, yomichanPopupToggleButton.clientWidth);
+		popup.style.right = right + "px";
 
 		if ((selection.top - popup.clientHeight - 5) < 0) {
 			let y = selection.bottom + document.documentElement.scrollTop + 5;
@@ -122,10 +130,8 @@ var ymcContent = {
 		}
 
 		// 展開する場合のサイズを記憶
-		var _clientH = popup.clientHeight - parseFloat(_style.paddingTop)
-				- parseFloat(_style.paddingBottom);
-		var _clientW = popup.clientWidth - parseFloat(_style.paddingLeft)
-				- parseFloat(_style.paddingRight);
+		var _clientH = popup.clientHeight - verticalPadding;
+		var _clientW = popup.clientWidth - horizontalPadding;
 
 		// 拡大縮小ボタンの押下イベント
 		yomichanPopupToggleButton.addEventListener('click', function() {
