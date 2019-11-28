@@ -23,7 +23,7 @@
 				"<all_urls>"
 			],
 			"js": [
-				"js/content.js"
+				"js/yomichanContent.js"
 			],
 			"css": [
 				"css/style.css"
