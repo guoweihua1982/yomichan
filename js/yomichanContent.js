@@ -1,4 +1,5 @@
 var ymcContent = {
+	popupSpacing : 5,
 	enabled : false,
 	oldSelectionText : "",
 	expand : false,
@@ -117,14 +118,18 @@ var ymcContent = {
 				- horizontalPadding);
 		right = Math.max(right, yomichanPopupToggleButton.clientWidth);
 		popup.style.right = right + "px";
-
-		if ((selection.top - popup.clientHeight - 5) < 0) {
-			let y = selection.bottom + document.documentElement.scrollTop + 5;
+		if ((selection.top - popup.clientHeight - ymcContent.popupSpacing) < 0) {
+			let y = selection.bottom + document.documentElement.scrollTop
+					+ ymcContent.popupSpacing;
 			popup.classList.add('yomichan-popup-bottom');
 			popup.style.top = y + "px";
 		} else {
-			let y = (document.documentElement.clientHeight
-					- (selection.top + document.documentElement.scrollTop) + 5)
+			let y = document.documentElement.clientHeight
+					- (selection.top + document.documentElement.scrollTop)
+					+ ymcContent.popupSpacing;
+			if ("relative" == window.getComputedStyle(document.body, null).position) {
+				y += (document.documentElement.scrollHeight - document.documentElement.clientHeight);
+			}
 			popup.classList.add('yomichan-popup-top');
 			popup.style.bottom = y + "px";
 		}
