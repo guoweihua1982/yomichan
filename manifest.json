@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "yomichan",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "選択したテキストにふりがなを付ける",
 	"icons": {
 		"16": "img/icon.png",
@@ -32,7 +32,6 @@
 		}
 	],
 	"permissions": [
-		"tabs",
 		"storage"
 	],
 	"homepage_url": "https://github.com/guoweihua1982/yomichan",

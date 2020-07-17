@@ -1,7 +1,7 @@
 //辞書の置き場
 var DIC_URL = "chrome-extension://lib/kuromoji/dict/";
 var ymcMain = {
-	enabled : false,
+	enabled : true,
 	// tokenizerObjオブジェクト
 	tokenizer : null,
 
@@ -18,6 +18,9 @@ var ymcMain = {
 		});
 		chrome.storage.local.get("yomichanEnabled", function(value) {
 			ymcMain.enabled = value.yomichanEnabled;
+			if (ymcMain.enabled === undefined) {
+				ymcMain.enabled=true;
+			}
 			// アイコン設定
 			ymcMain.setIcon();
 		});

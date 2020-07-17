@@ -6,8 +6,7 @@
 
 ## インストール
 
-- chrome ウェブストアに公開していないため、 [デベロッパー モード] でインストールしてください。<br>
-[「カスタムの Chrome アプリと拡張機能を作成して公開する」](https://support.google.com/chrome/a/answer/2714278?hl=ja)の手順2をご参照ください。  
+- [「chrome ウェブストア」](https://chrome.google.com/webstore/detail/yomichan/nbfhegiidojdmnahegkphdoabohfmoof?hl=ja&authuser=0)からインストールしてください。
 
 ## 使い方
 - 漢字を含むテキストを選択すると、該当テキストの漢字にふりがなを付けるメッセージを表示できる。
