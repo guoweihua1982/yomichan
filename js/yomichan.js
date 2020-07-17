@@ -1,7 +1,7 @@
 //辞書の置き場
 var DIC_URL = "chrome-extension://lib/kuromoji/dict/";
 var ymcMain = {
-	enabled : true,
+	enabled : false,
 	// tokenizerObjオブジェクト
 	tokenizer : null,
 

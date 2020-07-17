@@ -2,20 +2,20 @@ var ymcContent = {
 	popupSpacing : 5,
 	enabled : false,
 	oldSelectionText : "",
-	expand : true,
+	expand : false,
 	// 有効にする
 	enable : function() {
-		if (ymcContent.enabled) {
-			return;
-		}
-		ymcContent.enabled = true;
-
 		chrome.storage.local.get("showYomichanPopup", function(value) {
 			ymcContent.expand = value.showYomichanPopup;
 			if (ymcContent.expand === undefined) {
 				ymcContent.expand=true;
 			}
 		});
+		if (ymcContent.enabled) {
+			return;
+		}
+		ymcContent.enabled = true;
+
 		window.addEventListener('mousedown', this.onMouseDown, false);
 		window.addEventListener('mouseup', this.onMouseUp, false);
 		document.addEventListener('selectionchange', this.onSelectionchange,
