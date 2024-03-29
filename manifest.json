@@ -1,20 +1,19 @@
-{
-	"manifest_version": 2,
+{	
+	"manifest_version": 3,
 	"name": "yomichan",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "選択したテキストにふりがなを付ける",
 	"icons": {
 		"16": "img/icon.png",
 		"48": "img/icon.png",
 		"128": "img/icon.png"
 	},
-	"browser_action": {
+	"action": {
 		"default_icon": "img/yomichan_disable.png",
 		"default_title": "選択したテキストにふりがなを付ける"
 	},
 	"background": {
-		"page": "html/background.html",
-		"persistent": true
+		"service_worker": "js/background.js"
 	},
 	"content_scripts": [
 		{
@@ -39,7 +38,15 @@
 		"keyword": "yomi"
 	},
 	"web_accessible_resources": [
-		"img/shrinkButton.png",
-		"img/icon.png"
+		{
+			"resources": [
+				"img/shrinkButton.png",
+				"img/settingButton.png",
+				"img/icon.png"
+			],
+			"matches": [
+				"<all_urls>"
+			]
+		}
 	]
 }

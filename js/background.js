@@ -1,10 +1,13 @@
+importScripts("./yomichan.js")
+
+
 // 初期化
 ymcMain.init();
 
 // ブラウザの上部のアイコンをクリックするイベント：有効／無効状態を設定
-chrome.browserAction.onClicked.addListener(ymcMain.onClicked);
+chrome.action.onClicked.addListener(ymcMain.onClicked);
 // タブ切り替えイベント:有効／無効状態をチェックし、contentに送信
-chrome.tabs.onSelectionChanged.addListener(ymcMain.onSelectionChanged);
+// chrome.tabs.onActivated.addListener(ymcMain.onSelectionChanged);
 
 // contentからのメッセージを受ける
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
