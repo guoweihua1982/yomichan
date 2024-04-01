@@ -1,7 +1,7 @@
 {	
 	"manifest_version": 3,
 	"name": "yomichan",
-	"version": "1.0.3",
+	"version": "1.1.0",
 	"description": "選択したテキストにふりがなを付ける",
 	"icons": {
 		"16": "img/icon.png",
