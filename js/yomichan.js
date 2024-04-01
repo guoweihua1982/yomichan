@@ -1,3 +1,6 @@
+importScripts("../lib/kuromoji/kuromoji.js")
+
+
 //辞書の置き場
 var DIC_URL = "chrome-extension://lib/kuromoji/dict/";
 var ymcMain = {
@@ -23,8 +26,13 @@ var ymcMain = {
 			}
 			// アイコン設定
 			ymcMain.setIcon();
+			// Local Storageに保存
+			chrome.storage.local.set({
+				'yomichanEnabled' : ymcMain.enabled
+			}, function() {
+			});
 		});
-
+		
 	},
 	// クリックすると、有効／無効の設定
 	onClicked : function(tab) {
@@ -38,18 +46,18 @@ var ymcMain = {
 		// 有効／無効の状態をcontentに送信する
 		ymcMain.sendEnabled(tab.id);
 	},
-	onSelectionChanged : function(tabId) {
+	onSelectionChanged : function(tab) {
 		// 有効／無効の状態をcontentに送信する
-		ymcMain.sendEnabled(tabId);
+		ymcMain.sendEnabled(tab.tabId);
 	},
 	// ブラウザ上に表示するアイコンを設定
 	setIcon : function() {
 		if (ymcMain.enabled) {
-			chrome.browserAction.setIcon({
+			chrome.action.setIcon({
 				path : "../img/yomichan_enable.png"
 			});
 		} else {
-			chrome.browserAction.setIcon({
+			chrome.action.setIcon({
 				path : "../img/yomichan_disable.png"
 			});
 		}
@@ -70,6 +78,7 @@ var ymcMain = {
 	getFurigana : function(text, sendResponse) {
 		var resultHtml = "";
 		if (text == null || text == "") {
+			sendResponse();
 			return;
 		}
 		let hasResponse = false;
@@ -95,14 +104,26 @@ var ymcMain = {
 						}
 						if (reading != null && reading.trim() != "") {
 							// 読み方が存在する場合、読み方をひらがなに変換
-							var kana = kana2Hira(reading);
-							if (kana != kana2Hira(surfaceForm)) {
-								// ひらがなに変換する対象単語がふりがなの読み方と一緒でない（漢字である）場合、rubyタグを作成
-								resultHtml += "<ruby><rb>" + surfaceForm
-										+ "</rb><rp>(</rp><rt>&nbsp;" + kana
-										+ "&nbsp;</rt><rp>)</rp></ruby>";
-								hasResponse=true;
-								continue;
+							var note = kana2Hira(reading);
+							var text = kana2Hira(surfaceForm);
+							if (note != text) {
+								// 対象単語と読み方の先頭にある同じものを削除
+								var start = 0;
+								while (note && text && note[start] == text[start]) {
+									start += 1;
+								}
+								resultHtml += surfaceForm.substr(0, start);
+								surfaceForm = surfaceForm.substr(start);
+								note = note.substr(start);
+
+								if (note && text) {
+									// ひらがなに変換する対象単語がふりがなの読み方と一緒でない（漢字である）場合、rubyタグを作成
+									resultHtml += "<ruby><rb>" + surfaceForm
+											+ "</rb><rp>(</rp><rt>&nbsp;" + note
+											+ "&nbsp;</rt><rp>)</rp></ruby>";
+									hasResponse=true;
+									continue;
+								}
 							}
 						}
 						// 漢字以外の場合、そのまま文章に設定する
@@ -112,6 +133,8 @@ var ymcMain = {
 		if (hasResponse) {
 			// 作成したHTMLをcontentに返却する
 			sendResponse(resultHtml);
+		} else {
+			sendResponse();
 		}
 	}
 }

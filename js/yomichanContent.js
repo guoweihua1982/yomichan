@@ -3,6 +3,18 @@ var ymcContent = {
 	enabled : false,
 	oldSelectionText : "",
 	expand : false,
+	settingExpand : false,
+	clickSettingPopup : false, 
+	minFontSize : 10,
+	maxFontSize : 20,
+	noteFontSizeDiff: 4,
+	setting: {
+		backgroundColor: "#1C1C1C",
+		textColor: "#4CEE4C",
+		wordColor: "#FFFFFF",
+		textFontSize: 12,
+		wordFontSize: 14,
+	},
 	// 有効にする
 	enable : function() {
 		chrome.storage.local.get("showYomichanPopup", function(value) {
@@ -15,6 +27,19 @@ var ymcContent = {
 			return;
 		}
 		ymcContent.enabled = true;
+
+		// Local Storageからポップアップの設定情報を取得
+		chrome.storage.local.get("yomichanSetting", function(value) {
+			let setting = value.yomichanSetting;
+			if (setting === undefined) {
+				chrome.storage.local.set({
+					"yomichanSetting": ymcContent.setting
+				}, function() {
+				});
+			} else {
+				ymcContent.setting = setting;
+			}
+		});
 
 		window.addEventListener('mousedown', this.onMouseDown, false);
 		window.addEventListener('mouseup', this.onMouseUp, false);
@@ -34,7 +59,10 @@ var ymcContent = {
 				false);
 	},
 	// マウスアップ
-	onMouseUp : function(e) {
+	onMouseUp : function(event) {
+		if (ymcContent.clickSettingPopup) {
+			return;
+		}
 		var selection = ymcContent.getSelection();
 		if (selection == null
 				|| (ymcContent.oldSelectionText == selection.selectionText && document
@@ -70,16 +98,28 @@ var ymcContent = {
 		}
 	},
 	// マウスダウン
-	onMouseDown : function(e) {
-		// ymcContent.closePopup();
+	onMouseDown : function(event) {
+		var settingPopup = document.querySelector(".yomichan-setting-popup")
+		if (settingPopup) {
+			var clickedElem = event.target.closest(".yomichan-setting-popup");
+			if (clickedElem == settingPopup) {
+				ymcContent.clickSettingPopup = true;
+				return;
+			}
+		}
+		ymcContent.clickSettingPopup = false;
 	},
 	// 選択内容が変わるイベント
-	onSelectionchange : function(e) {
+	onSelectionchange : function(event) {
+		if (ymcContent.clickSettingPopup) {
+			return;
+		}
 		ymcContent.closePopup();
 	},
 	// ひらがなを付けるテキストのポップアップを表示
 	showPopup : function(selection, html) {
 		var popup = document.createElement('div');
+		popup.style.backgroundColor = ymcContent.setting.backgroundColor;
 		popup.classList.add('yomichan-popup');
 
 		// 縮小ボタン
@@ -87,14 +127,31 @@ var ymcContent = {
 		yomichanPopupToggleButton.classList.add('yomichan-popup-toggle-button');
 		popup.appendChild(yomichanPopupToggleButton);
 
+		// 設定ボタン
+		var yomichanSettingButton = document.createElement('button');
+		yomichanSettingButton.classList.add('yomichan-setting-button');
+		popup.appendChild(yomichanSettingButton);
+
 		// コンテンツを表示するエリア
 		var yomichanContent = document.createElement('div');
+		yomichanContent.style.color = ymcContent.setting.textColor;
+		yomichanContent.style.fontSize = ymcContent.setting.textFontSize + "px";
 		yomichanContent.classList.add('yomichan-content');
 		yomichanContent.innerHTML = html;
 		popup.appendChild(yomichanContent);
 
 		// bodyに追加
 		document.body.appendChild(popup);
+
+		// rubyのstyleを設定
+		document.querySelectorAll('.yomichan-content>ruby').forEach(function(word) {
+			word.style.color = ymcContent.setting.wordColor;
+			word.style.fontSize = ymcContent.setting.wordFontSize + "px";
+		});
+		document.querySelectorAll('.yomichan-content>ruby>rt').forEach(function(word) {
+			word.style.color = ymcContent.setting.wordColor;
+			word.style.fontSize = ymcContent.setting.wordFontSize - ymcContent.noteFontSizeDiff + "px";
+		});
 
 		// 表示する幅を再計算
 		var _style = window.getComputedStyle(popup, null);
@@ -165,16 +222,189 @@ var ymcContent = {
 			}
 			popup.style.height = expand ? _clientH + 'px' : '0px';
 			popup.style.width = expand ? _clientW + 'px' : '0px';
+
+			let settingButton = document.querySelector('.yomichan-setting-button');
+			settingButton.style.display = expand ? 'block' : 'none';
+
+			let settingPopup = document.querySelector('.yomichan-setting-popup');
+			if (!expand && settingPopup) {
+				settingPopup.remove();
+				ymcContent.settingExpand = false;
+			}
+
 			if (expand) {
 				popup.classList.remove('yomichan-popup-hidden');
 			} else {
 				popup.classList.add('yomichan-popup-hidden');
 			}
+		}
 
+		// 設定ボタンの押下イベント
+		yomichanSettingButton.addEventListener('click', function() {
+			if (ymcContent.settingExpand == false) {
+				showSettingPopup();
+				ymcContent.settingExpand = true;
+			} else {
+				closeSettingPopup();
+				ymcContent.settingExpand = false
+			}
+		}, false);
+
+		// 設定ポップアップを表示
+		function showSettingPopup() {
+			var settingPopup = document.createElement('div');
+			settingPopup.classList.add('yomichan-setting-popup');
+
+			// 背景
+			var bkgdDiv = document.createElement('div');
+
+			var bkgdLabel = document.createElement('span');
+			bkgdLabel.textContent = "背景：";
+			bkgdDiv.appendChild(bkgdLabel);
+
+			var bkgdColorPicker = document.createElement('input');
+			bkgdColorPicker.type = 'color';
+			bkgdColorPicker.value = ymcContent.setting.backgroundColor;
+			bkgdColorPicker.classList.add('popup-setting');
+			bkgdColorPicker.id = 'background-color';
+			bkgdDiv.appendChild(bkgdColorPicker);
+
+			settingPopup.appendChild(bkgdDiv);
+
+			// 対象単語
+			var wordDiv = document.createElement('div');
+
+			var wordColorLabel = document.createElement('span');
+			wordColorLabel.textContent = "漢字・ふりがな：";
+			wordDiv.appendChild(wordColorLabel);
+
+			var wordColorPicker = document.createElement('input');
+			wordColorPicker.type = 'color';
+			wordColorPicker.value = ymcContent.setting.wordColor;
+			wordColorPicker.classList.add('popup-setting');
+			wordColorPicker.id = 'word-color';
+			wordDiv.appendChild(wordColorPicker);
+
+			var wordFontSizeInput = document.createElement('input');
+			wordFontSizeInput.type = 'range';
+			wordFontSizeInput.value = ymcContent.setting.wordFontSize;
+			wordFontSizeInput.min = ymcContent.minFontSize;
+			wordFontSizeInput.max = ymcContent.maxFontSize;
+			wordFontSizeInput.classList.add('popup-setting');
+			wordFontSizeInput.id = 'word-font-size';
+			wordDiv.appendChild(wordFontSizeInput);
+
+			settingPopup.appendChild(wordDiv);
+			
+			// 漢字以外のテキスト
+			var textDiv = document.createElement('div');
+
+			var textLabel = document.createElement('span');
+			textLabel.textContent = "漢字以外のテキスト：";
+			textDiv.appendChild(textLabel);
+
+			var textColorPicker = document.createElement('input');
+			textColorPicker.type = 'color';
+			textColorPicker.value = ymcContent.setting.textColor;
+			textColorPicker.classList.add('popup-setting');
+			textColorPicker.id = 'text-color';
+			textDiv.appendChild(textColorPicker);
+
+			var textFontSizeInput = document.createElement('input');
+			textFontSizeInput.type = 'range';
+			textFontSizeInput.value = ymcContent.setting.textFontSize;
+			textFontSizeInput.min = ymcContent.minFontSize;
+			textFontSizeInput.max = ymcContent.maxFontSize;
+			textFontSizeInput.classList.add('popup-setting');
+			textFontSizeInput.id = 'text-font-size';
+			textDiv.appendChild(textFontSizeInput);
+
+			settingPopup.appendChild(textDiv);
+
+			// bodyに追加
+			popup.appendChild(settingPopup);
+
+			listenSettingChangeEvent();
+		}
+
+		// 設定項目を変更するイベント：該当項目を設定
+		function listenSettingChangeEvent() {
+			document.querySelectorAll(".popup-setting").forEach(function(elem) {
+				elem.addEventListener("input", function(event) {
+					let value = event.target.value;
+					switch (elem.id) {
+					case "background-color":
+						// 背景色
+						document.querySelector('.yomichan-popup').style.backgroundColor = value;
+						ymcContent.setting.backgroundColor = value;
+						break;
+					case "text-color":
+						// 漢字以外のテキストの色
+						document.querySelector('.yomichan-content').style.color = value;
+						ymcContent.setting.textColor = value;
+						break;
+					case "word-color":
+						// 対象単語の色
+						document.querySelectorAll(
+							'.yomichan-content>ruby, .yomichan-content>ruby>rt'
+						).forEach(function(word) {
+							word.style.color = value;
+						});
+						ymcContent.setting.wordColor = value;
+						break;
+					case "text-font-size":
+						// 漢字以外のテキストのフォントサイズ
+						document.querySelector('.yomichan-content').style.fontSize = value + "px";
+						resetPopupStyle();
+						ymcContent.setting.textFontSize = value;
+						break;
+					case "word-font-size":
+						// 対象単語のフォントサイズ
+						document.querySelectorAll('.yomichan-content>ruby').forEach(function(word) {
+							word.style.fontSize = value + "px";
+						});
+						document.querySelectorAll('.yomichan-content>ruby>rt').forEach(function(word) {
+							word.style.fontSize = value - ymcContent.noteFontSizeDiff + "px";
+						});
+						resetPopupStyle();
+						ymcContent.setting.wordFontSize = value;
+						break;
+					}
+					// Local Storageに保存
+					chrome.storage.local.set({
+						'yomichanSetting' : ymcContent.setting
+					}, function() {
+					});
+				}, false);
+			});
+		}
+
+		function resetPopupStyle() {
+			// 表示する内容の幅を取得し、ポップアップに設定する
+			popup.style.width = maxWidth + "px";
+			let yomichanContent = document.querySelector(".yomichan-content");
+			let range = document.createRange();
+			range.selectNodeContents(yomichanContent);
+			popup.style.width = Math.ceil(Math.min(maxWidth,
+					range.getBoundingClientRect().width)) + "px";
+			popup.style.height = 'auto';
+			window.getSelection().removeRange(range);
+		}
+
+		// 設定ポップアップを閉じる
+		function closeSettingPopup() {
+			document.querySelectorAll('.yomichan-setting-popup').forEach(function(popup) {
+				popup.parentNode.removeChild(popup);
+			});
 		}
 	},
 	// ポップアップを閉じる
 	closePopup : function() {
+		let settingPopup = document.querySelector('.yomichan-setting-popup');
+		if (settingPopup) {
+			settingPopup.remove();
+			ymcContent.settingExpand = false;
+		}
 		ymcContent.oldSelectionText = "";
 		document.querySelectorAll('.yomichan-popup').forEach(function(popup) {
 			popup.parentNode.removeChild(popup);
@@ -231,6 +461,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 // ページをロードする際に有効／無効の状態をチェックする
-chrome.extension.sendMessage({
+chrome.runtime.sendMessage({
 	type : "checkEnabled"
 });

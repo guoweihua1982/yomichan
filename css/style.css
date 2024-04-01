@@ -1,9 +1,7 @@
 .yomichan-popup {
 	position: absolute;
 	z-index: 999999999;
-	background-image: linear-gradient(to bottom, #6bbed2, #50abc4);
-	background-repeat: repeat-x;
-	border-color: #f5e79e;
+	border-color: #808080;
 	border-radius: 5px;
 	padding: 5px;
 	box-sizing: content-box;
@@ -11,28 +9,52 @@
 
 .yomichan-popup>.yomichan-content {
 	padding: 0px;
-	color: black;
 	text-align: left;
 	word-break: break-all;
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
-	font-size: 12px;
 	box-sizing: content-box;
+	line-height: 35px;
 }
 
 .yomichan-popup>.yomichan-content>ruby {
 	padding: 0px;
 	border: 0px;
 	font-weight: bold;
-	color: #8a6d3b;
-	font-size: 14px;
 }
 
 .yomichan-popup>.yomichan-content>ruby>rt {
-	font-size: 10px;
-	color: #8a6d3b;
 	white-space: nowrap;
+}
+
+.yomichan-popup>.yomichan-setting-button {
+	position: absolute;
+	cursor: pointer;
+	width: 20px;
+	min-width: 20px;
+	max-width: 20px;
+	height: 20px;
+	background-image:
+		url("chrome-extension://__MSG_@@extension_id__/img/settingButton.png");
+	background-repeat: repeat;
+	background-color: transparent;
+	background-size: 100% 100%;
+	border: 0;
+	outline: none;
+	box-sizing: border-box;
+	box-shadow: none;
+	padding: 5px;
+}
+
+.yomichan-popup-top>.yomichan-setting-button {
+	right: -20px;
+	bottom: 25px;
+}
+
+.yomichan-popup-bottom>.yomichan-setting-button {
+	right: -20px;
+	top: 25px;
 }
 
 .yomichan-popup>.yomichan-popup-toggle-button {
@@ -79,4 +101,43 @@
 
 .yomichan-popup-transition>.yomichan-popup-toggle-button {
 	transition: all 0.3s linear;
+}
+
+.yomichan-popup>.yomichan-setting-popup {
+	z-index: 999999999;
+	background-color: #DEF0CE;
+	border-color: #808080;
+	width: 120px;
+	border-radius: 5px;
+	padding: 5px;
+	box-sizing: content-box;
+}
+
+.yomichan-popup-top>.yomichan-setting-popup {
+	position: absolute;
+	left: 100%;
+	top: 100%;
+	transform: translate(25px, -45px);
+}
+
+.yomichan-popup-bottom>.yomichan-setting-popup {
+	position: absolute;
+	left: 100%;
+	bottom: 100%;
+	transform: translate(25px, 25px);
+}
+
+.yomichan-setting-popup>div {
+	margin-bottom: 2px;
+}
+
+.yomichan-setting-popup>div>span {
+	display: inline-block;
+	text-align: left;
+	width: 120px;
+	font-size: 12px;
+}
+
+.yomichan-setting-popup>div>.popup-setting {
+	width: 120px;
 }
