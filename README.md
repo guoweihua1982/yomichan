@@ -1,22 +1,22 @@
-# �ǂ݂����
+# 読みちゃん
 
-## �ǂ݂����Ƃ�
+## 読みちゃんとは
 
-���{��̊����ɂӂ肪�Ȃ�t����Chrome�g���@�\�ł��B
+日本語の漢字にふりがなを付けるChrome拡張機能です。
 
-## �C���X�g�[��
+## インストール
 
-- [�uchrome �E�F�u�X�g�A�v](https://chrome.google.com/webstore/detail/yomichan/nbfhegiidojdmnahegkphdoabohfmoof?hl=ja&authuser=0)����C���X�g�[�����Ă��������B
+- [「chrome ウェブストア」](https://chrome.google.com/webstore/detail/yomichan/nbfhegiidojdmnahegkphdoabohfmoof?hl=ja&authuser=0)からインストールしてください。
 
-## �g����
-- �������܂ރe�L�X�g��I������ƁA�Y���e�L�X�g�̊����ɂӂ肪�Ȃ�t���郁�b�Z�[�W��\���ł���B
-<br><img src="README/images/�ǂݕ��\��.png"  >
+## 使い方
+- 漢字を含むテキストを選択すると、該当テキストの漢字にふりがなを付けるメッセージを表示できる。
+<br><img src="README/images/読み方表示.png"  >
 
-- �ӂ肪�Ȃ�t���郁�b�Z�[�W�̉E���̏k���{�^������������ƁA��Ɂu�ǁv�A�C�R�������\���ł���B�Y���A�C�R������������ƁA�ӂ肪�Ȃ�t���郁�b�Z�[�W��\������B
-<br><img src="README/images/�ǂݕ��B��.png"  >
+- ふりがなを付けるメッセージの右下の縮小ボタンを押下すると、常に「読」アイコンだけ表示できる。該当アイコンを押下すると、ふりがなを付けるメッセージを表示する。
+<br><img src="README/images/読み方隠し.png"  >
 
-- �k���{�^���̏�̐ݒ�{�^������������ƁA�E�ɐݒ�|�b�v�A�b�v��\������B�ݒ�|�b�v�A�b�v�Ń��b�Z�[�W�̔w�i�F�E�����̐F�ƃT�C�Y��ύX�ł���B
-<br><img src="README/images/�ݒ�|�b�v�A�b�v.png"  >
+- 縮小ボタンの上の設定ボタンを押下すると、右に設定ポップアップを表示する。設定ポップアップでメッセージの背景色・文字の色とサイズを変更できる。
+<br><img src="README/images/設定ポップアップ.png"  >
 
-- �u���E�U�́u�ǁv�A�C�R������������ƁA�A�C�R�����O���[�ɂ��A�ӂ肪�Ȃ�t���郁�b�Z�[�W��\�����Ȃ��悤�ɐݒ�ł���B
-<br><img src="README/images/����.png"  >
+- ブラウザの「読」アイコンを押下すると、アイコンをグレーにし、ふりがなを付けるメッセージを表示しないように設定できる。
+<br><img src="README/images/無効.png"  >
